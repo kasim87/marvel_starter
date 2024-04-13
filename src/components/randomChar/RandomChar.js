@@ -1,5 +1,5 @@
 import './randomChar.scss';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import MarvelService from '../../service/MarvelService';
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/errorMessage';
@@ -12,6 +12,15 @@ function RandomChar() {
 
     const marvelService = new MarvelService();
 
+    useEffect(() => {
+        updateChar();
+        const timerId = setInterval(updateChar, 60000);
+
+        return () => {
+            clearInterval(timerId)
+        }
+    }, [])
+
     function onCharLoaded(char) {
         setLoading(false)
         setChar(char)
@@ -22,16 +31,18 @@ function RandomChar() {
         setError(true)
     }
 
+    function onCharLoading() {
+        setLoading(true)
+    }
+
     function updateChar() {
-        // let id = 1011005
         const id = Math.floor(Math.random() * (1011400 - 1011000)) + 1011000
+        onCharLoading()
         marvelService
             .getCharacter(id)
             .then(onCharLoaded)
             .catch(onError)
     }
-
-    updateChar()
 
     const errorMessage = error ? <ErrorMessage/> : null
     const spinner = loading ? <Spinner/> : null
@@ -61,10 +72,14 @@ function RandomChar() {
 
 function View({char}) {
     const {name, description, thumbnail, homepage, wiki} = char
+    let imgStyle = {'object-fit' : 'cover'}
+    if (thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg') {
+        imgStyle = {'object-fit' : 'contain'}
+    }
     
     return (
         <div className="randomchar__block">
-        <img src={thumbnail} alt="Random character" className="randomchar__img"/>
+        <img src={thumbnail} alt="Random character" className="randomchar__img" style={imgStyle}/>
         <div className="randomchar__info">
             <p className="randomchar__name">{name}</p>
             <p className="randomchar__descr">

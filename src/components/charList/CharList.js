@@ -54,7 +54,7 @@ import ErrorMessage from '../errorMessage/errorMessage';
 
 // export default CharList;
 
-function CharList() {
+function CharList({onCharSelected}) {
 
     const [charList, setCharList] = useState([])
     const [loading, setLoading] = useState(true)
@@ -82,15 +82,17 @@ function CharList() {
     // чтобы не помещать такую конструкцию в метод render
     function renderItems(arr) {
         const items =  arr.map((item) => {
-            let imgStyle = {'object-fit' : 'cover'};
+            let imgStyle = {'objectFit' : 'cover'};
             if (item.thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg') {
-                imgStyle = {'object-fit' : 'unset'};
+                imgStyle = {'objectFit' : 'unset'};
             }
             
             return (
                 <li 
                     className="char__item"
-                    key={item.id}>
+                    key={item.id}
+                    onClick={() => onCharSelected(item.id)}
+                >
                         <img src={item.thumbnail} alt={item.name} style={imgStyle}/>
                         <div className="char__name">{item.name}</div>
                 </li>

@@ -1,8 +1,10 @@
 
 class MarvelService {
     _apiBase = 'https://gateway.marvel.com:443/v1/public/'
-    _apikay = 'apikey=ad8f3f5e0022370ea152727c839e62ed'
-// 2e960df2b8623111fc4f935d1000773b
+    _apikay = 'apikey=2e960df2b8623111fc4f935d1000773b'
+// ad8f3f5e0022370ea152727c839e62ed      3
+// 2e960df2b8623111fc4f935d1000773b    2
+// 8baa88906c5928d2b76ef9a039712c7e    1
     getResource = async (url) => {
         let res = await fetch(url)
         
@@ -33,6 +35,7 @@ class MarvelService {
             thumbnail: char.thumbnail.path + '.' + char.thumbnail.extension,
             homepage: char.urls[0].url,
             wiki: char.urls[1].url,
+            comics: char.comics.items
         }
     }
 }

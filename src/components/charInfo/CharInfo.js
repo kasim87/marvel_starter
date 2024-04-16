@@ -41,7 +41,6 @@ function CharInfo(props) {
             .getCharacter(charId)
             .then(onCharLoaded)
             .catch(onError)
-
     }
 
     const skeleton = char || loading || error ? null : <Skeleton/>

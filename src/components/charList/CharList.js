@@ -4,73 +4,38 @@ import MarvelService from '../../service/MarvelService';
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/errorMessage';
 
-// const CharList = () => {
-//     return (
-//         <div className="char__list">
-//             <ul className="char__grid">
-//                 <li className="char__item">
-//                     <img src={abyss} alt="abyss"/>
-//                     <div className="char__name">Abyss</div>
-//                 </li>
-//                 <li className="char__item char__item_selected">
-//                     <img src={abyss} alt="abyss"/>
-//                     <div className="char__name">Abyss</div>
-//                 </li>
-//                 <li className="char__item">
-//                     <img src={abyss} alt="abyss"/>
-//                     <div className="char__name">Abyss</div>
-//                 </li>
-//                 <li className="char__item">
-//                     <img src={abyss} alt="abyss"/>
-//                     <div className="char__name">Abyss</div>
-//                 </li>
-//                 <li className="char__item">
-//                     <img src={abyss} alt="abyss"/>
-//                     <div className="char__name">Abyss</div>
-//                 </li>
-//                 <li className="char__item">
-//                     <img src={abyss} alt="abyss"/>
-//                     <div className="char__name">Abyss</div>
-//                 </li>
-//                 <li className="char__item">
-//                     <img src={abyss} alt="abyss"/>
-//                     <div className="char__name">Abyss</div>
-//                 </li>
-//                 <li className="char__item">
-//                     <img src={abyss} alt="abyss"/>
-//                     <div className="char__name">Abyss</div>
-//                 </li>
-//                 <li className="char__item">
-//                     <img src={abyss} alt="abyss"/>
-//                     <div className="char__name">Abyss</div>
-//                 </li>
-//             </ul>
-//             <button className="button button__main button__long">
-//                 <div className="inner">load more</div>
-//             </button>
-//         </div>
-//     )
-// }
-
-// export default CharList;
-
 function CharList({onCharSelected}) {
 
     const [charList, setCharList] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(false)
+    const [newItemLoading, setNewItemLoading] = useState(false)
+    const [offset, setOffset] = useState(210)
+    const [charEnd, setCharEnd] = useState(false)
     
     const marvelService = new MarvelService();
 
     useEffect(() => {
-        marvelService.getAllCharacters()
-            .then(onCharListLoaded)
-            .catch(onError)
+        onRequest()
     }, [])
 
-    function onCharListLoaded(charList) {
-        setCharList(charList)
+    function onRequest(offset) {
+        onCharListLoading()
+        marvelService.getAllCharacters(offset)
+            .then(onCharListLoaded)
+            .catch(onError)
+    }
+
+    function onCharListLoading() {
+        setNewItemLoading(true)
+    }
+
+    function onCharListLoaded(newcharList) {
+        setCharList([...charList, ...newcharList])
         setLoading(false)
+        setNewItemLoading(false)
+        setOffset(offset + 9)
+        setCharEnd(newcharList.length < 9 ? true : false)
     }
 
     function onError() {
@@ -78,8 +43,6 @@ function CharList({onCharSelected}) {
         setError(true)
     }
 
-    // Этот метод создан для оптимизации, 
-    // чтобы не помещать такую конструкцию в метод render
     function renderItems(arr) {
         const items =  arr.map((item) => {
             let imgStyle = {'objectFit' : 'cover'};
@@ -98,7 +61,7 @@ function CharList({onCharSelected}) {
                 </li>
             )
         });
-        // А эта конструкция вынесена для центровки спиннера/ошибки
+        
         return (
             <ul className="char__grid">
                 {items}
@@ -117,7 +80,12 @@ function CharList({onCharSelected}) {
             {errorMessage}
             {spinner}
             {content}
-            <button className="button button__main button__long">
+            <button 
+                className="button button__main button__long"
+                disabled={newItemLoading}
+                style={{'display': charEnd ? 'none' : 'block'}}
+                onClick={() => onRequest(offset)}
+                >
                 <div className="inner">load more</div>
             </button>
         </div>

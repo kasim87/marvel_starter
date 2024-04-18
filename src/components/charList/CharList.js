@@ -1,6 +1,7 @@
 import './charList.scss';
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types'
+
 import MarvelService from '../../service/MarvelService';
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/errorMessage';
@@ -44,6 +45,18 @@ function CharList({onCharSelected}) {
         setError(true)
     }
 
+    let itemRefs = []
+
+    function setRef(ref) {
+        itemRefs.push(ref)
+    }
+
+    function focusOnItem(id) {
+        itemRefs.forEach(item => item.classList.remove('char__item_selected'))
+        itemRefs[id].classList.add('char__item_selected')
+        itemRefs[id].focus()
+    }
+
     function renderItems(arr) {
         const items =  arr.map((item) => {
             let imgStyle = {'objectFit' : 'cover'};
@@ -54,8 +67,13 @@ function CharList({onCharSelected}) {
             return (
                 <li 
                     className="char__item"
+                    tabIndex={0}
+                    ref={setRef}
                     key={item.id}
-                    onClick={() => onCharSelected(item.id)}
+                    onClick={() => {
+                        onCharSelected(item.id)
+                        focusOnItem(item.id)
+                    }}
                 >
                         <img src={item.thumbnail} alt={item.name} style={imgStyle}/>
                         <div className="char__name">{item.name}</div>

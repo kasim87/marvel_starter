@@ -1,5 +1,5 @@
 import './charList.scss';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types'
 
 import MarvelService from '../../service/MarvelService';
@@ -45,16 +45,13 @@ function CharList({onCharSelected}) {
         setError(true)
     }
 
-    let itemRefs = []
-
-    function setRef(ref) {
-        itemRefs.push(ref)
-    }
+    let itemRefs = useRef([])
 
     function focusOnItem(id) {
-        itemRefs.forEach(item => item.classList.remove('char__item_selected'))
-        itemRefs[id].classList.add('char__item_selected')
-        itemRefs[id].focus()
+        console.log(itemRefs)
+        itemRefs.current.forEach(item => item.classList.remove('char__item_selected'))
+        itemRefs.current[id].classList.add('char__item_selected')
+        itemRefs.current[id].focus()
     }
 
     function renderItems(arr) {
@@ -68,7 +65,7 @@ function CharList({onCharSelected}) {
                 <li 
                     className="char__item"
                     tabIndex={0}
-                    ref={setRef}
+                    ref={el => itemRefs.current[item.id] = el}
                     key={item.id}
                     onClick={() => {
                         onCharSelected(item.id)

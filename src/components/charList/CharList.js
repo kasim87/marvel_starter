@@ -48,7 +48,6 @@ function CharList({onCharSelected}) {
     let itemRefs = useRef([])
 
     function focusOnItem(id) {
-        console.log(itemRefs)
         itemRefs.current.forEach(item => item.classList.remove('char__item_selected'))
         itemRefs.current[id].classList.add('char__item_selected')
         itemRefs.current[id].focus()

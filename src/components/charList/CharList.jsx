@@ -9,40 +9,27 @@ import ErrorMessage from '../errorMessage/errorMessage';
 function CharList({onCharSelected}) {
 
     const [charList, setCharList] = useState([])
-    const [loading, setLoading] = useState(true)
-    const [error, setError] = useState(false)
     const [newItemLoading, setNewItemLoading] = useState(false)
     const [offset, setOffset] = useState(210)
     const [charEnd, setCharEnd] = useState(false)
     
-    const marvelService = new MarvelService();
+    const {loading, error, getAllCharacters} = MarvelService();
 
     useEffect(() => {
-        onRequest()
+        onRequest(offset, true)
     }, [])
 
-    function onRequest(offset) {
-        onCharListLoading()
-        marvelService.getAllCharacters(offset)
+    function onRequest(offset, initial) {
+        initial ? setNewItemLoading(false) : setNewItemLoading(true)
+        getAllCharacters(offset)
             .then(onCharListLoaded)
-            .catch(onError)
-    }
-
-    function onCharListLoading() {
-        setNewItemLoading(true)
     }
 
     function onCharListLoaded(newcharList) {
         setCharList([...charList, ...newcharList])
-        setLoading(false)
         setNewItemLoading(false)
         setOffset(offset + 9)
         setCharEnd(newcharList.length < 9 ? true : false)
-    }
-
-    function onError() {
-        setLoading(false)
-        setError(true)
     }
 
     let itemRefs = useRef([])
@@ -87,14 +74,13 @@ function CharList({onCharSelected}) {
     const items = renderItems(charList);
 
     const errorMessage = error ? <ErrorMessage/> : null;
-    const spinner = loading ? <Spinner/> : null;
-    const content = !(loading || error) ? items : null;
+    const spinner = loading && !newItemLoading ? <Spinner/> : null;
 
     return (
         <div className="char__list">
             {errorMessage}
             {spinner}
-            {content}
+            {items}
             <button 
                 className="button button__main button__long"
                 disabled={newItemLoading}

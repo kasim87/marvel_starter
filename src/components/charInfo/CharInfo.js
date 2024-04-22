@@ -9,23 +9,11 @@ import Skeleton from '../skeleton/Skeleton'
 
 function CharInfo(props) {
     const [char, setChar] = useState(null)
-    const [loading, setLoading] = useState(false)
-    const [error, setError] = useState(false)
 
-    const marvelService = new MarvelService()
+    const {loading, error, getCharacter, clearError} = MarvelService();
 
     function onCharLoaded(char) {
-        setLoading(false)
         setChar(char)
-    }
-
-    function onError() {
-        setLoading(false)
-        setError(true)
-    }
-
-    function onCharLoading() {
-        setLoading(true)
     }
 
     useEffect(() => {
@@ -37,12 +25,10 @@ function CharInfo(props) {
 
         if (!charId) return
 
-        onCharLoading()
+        clearError()
 
-        marvelService
-            .getCharacter(charId)
+        getCharacter(charId)
             .then(onCharLoaded)
-            .catch(onError)
     }
 
     const skeleton = char || loading || error ? null : <Skeleton/>

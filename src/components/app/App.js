@@ -30,9 +30,9 @@ function App() {
                     <ErrorBoundary>
                         <CharInfo charId={selectedChar}/>
                     </ErrorBoundary>
-                </div>
-                <img className="bg-decoration" src={decoration} alt="vision"/> */}
-
+                </div> */}
+                {/* <img className="bg-decoration" src={decoration} alt="vision"/> */}
+                <AppBanner/>
                 <ComicsList/>
             </main>
         </div>

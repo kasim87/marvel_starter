@@ -7,7 +7,6 @@ import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/errorMessage';
 
 function CharList({onCharSelected}) {
-
     const [charList, setCharList] = useState([])
     const [newItemLoading, setNewItemLoading] = useState(false)
     const [offset, setOffset] = useState(210)

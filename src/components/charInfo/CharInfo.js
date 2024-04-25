@@ -1,5 +1,6 @@
 import './charInfo.scss';
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types'
 
 import MarvelService from '../../service/MarvelService';
@@ -14,6 +15,7 @@ function CharInfo(props) {
 
     function onCharLoaded(char) {
         setChar(char)
+        // console.log(char)
     }
 
     useEffect(() => {
@@ -48,6 +50,8 @@ function CharInfo(props) {
 
 function View({char}) {
     const {name, description, thumbnail, homepage, wiki, comics} = char
+    // console.log(comics)
+
     let imgStyle = {'objectFit' : 'cover'}
     if (thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg') {
         imgStyle = {'objectFit' : 'contain'}
@@ -79,7 +83,10 @@ function View({char}) {
                     comics.splice(0, 10).map((comic, i) => {
                         return (
                             <li key={i} className="char__comics-item">
-                                {comic.name}
+                                <Link to={`/character/${comic.id}`}>
+                                    {comic.name}
+                                    {console.log(comic)}
+                                </Link>
                             </li>
                         )
                     })

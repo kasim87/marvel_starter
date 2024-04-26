@@ -50,7 +50,6 @@ function CharInfo(props) {
 
 function View({char}) {
     const {name, description, thumbnail, homepage, wiki, comics} = char
-    // console.log(comics)
 
     let imgStyle = {'objectFit' : 'cover'}
     if (thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg') {
@@ -83,9 +82,9 @@ function View({char}) {
                     comics.splice(0, 10).map((comic, i) => {
                         return (
                             <li key={i} className="char__comics-item">
-                                <Link to={`/character/${comic.id}`}>
+                                <Link to={`/comics/${comic.resourceURI.split('/').pop()}`}
+                                >
                                     {comic.name}
-                                    {console.log(comic)}
                                 </Link>
                             </li>
                         )

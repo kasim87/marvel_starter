@@ -24,6 +24,8 @@ function SingleComicPage() {
     }
 
     function onComicLoaded(newComic) {
+        console.log(newComic)
+
         setComic(newComic)
     }
 

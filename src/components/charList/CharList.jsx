@@ -1,6 +1,7 @@
 import './charList.scss';
 import { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types'
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 import MarvelService from '../../service/MarvelService';
 import Spinner from '../spinner/Spinner';
@@ -47,25 +48,35 @@ function CharList({onCharSelected}) {
             }
             
             return (
-                <li 
-                    className="char__item"
-                    tabIndex={0}
-                    ref={el => itemRefs.current[item.id] = el}
-                    key={item.id}
-                    onClick={() => {
-                        onCharSelected(item.id)
-                        focusOnItem(item.id)
-                    }}
-                >
+                <CSSTransition key={item.id} timeout={500} classNames='char__item'>
+                    <li 
+                        className="char__item"
+                        tabIndex={0}
+                        ref={el => itemRefs.current[item.id] = el}
+                        key={item.id}
+                        onClick={() => {
+                            onCharSelected(item.id)
+                            focusOnItem(item.id)
+                        }}
+                        onKeyPress={(e) => {
+                            if (e.key === ' ' || e.key === 'Enter') {
+                                onCharSelected(item.id)
+                                focusOnItem(item.id)
+                            }
+                        }}
+                    >
                         <img src={item.thumbnail} alt={item.name} style={imgStyle}/>
                         <div className="char__name">{item.name}</div>
-                </li>
+                    </li>
+                </CSSTransition>
             )
         });
         
         return (
             <ul className="char__grid">
-                {items}
+                <TransitionGroup component={null}>
+                    {items}
+                </TransitionGroup>
             </ul>
         )
     }

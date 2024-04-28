@@ -15,7 +15,6 @@ function CharInfo(props) {
 
     function onCharLoaded(char) {
         setChar(char)
-        // console.log(char)
     }
 
     useEffect(() => {

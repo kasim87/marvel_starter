@@ -10,7 +10,7 @@ export function useHttp() {
         try {
             const response = await fetch(url, {method, body, headers})
 
-            if(!response.ok) {
+            if(!response) {
                 throw new Error(`Could not fetch ${url} status: ${response.status}`)
             }
 

@@ -39,7 +39,7 @@ function CharSearchForm() {
 
 
     return (
-        <div char__search-form>
+        <div className='char__search-form'>
             <Formik 
                 initialValues={{
                     charName: '',

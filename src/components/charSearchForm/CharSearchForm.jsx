@@ -3,21 +3,20 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage as FormikErrorMessage } from "formik";
 import * as Yup from 'yup'
-import MarvelService from '../../service/MarvelService';
 
+import MarvelService from '../../service/MarvelService';
 import ErrorMessage from '../errorMessage/errorMessage';
 
 function CharSearchForm() {
     const [char, setChar] = useState(null)
-    // console.log(char)
-
+    
     const {loading, error, clearError, getCharacterByName} = MarvelService()
 
-    function onCharLoaded(name) {
-        setChar(name)
-        // console.log(char)
+    function onCharLoaded(newchar) {
+        setChar(newchar)
+        console.log(char)
     }
-
+    
     function updateChar(charName) {
         clearError()
 
@@ -25,16 +24,25 @@ function CharSearchForm() {
     }
 
     const errorMessage = error ? <div className='char__search-critical-error'><ErrorMessage/></div> : null
-    const results = !char ? null : char.length > 0 ? 
+    const content = !char ? null : 
                                     <div char__search-wrapper>
                                         <div className='char__search-success'>There is! Visit {char.name} page?</div>
                                         <Link to={`/characters/${char.id}`} className='button button__secondary'>
                                             <div className='inner'>TO PAGE</div>
                                         </Link>
-                                    </div> :
-                                        <div className='char__search-error'>
-                                            The character was not found. Check the name and try again
-                                        </div>
+                                    </div> 
+                                //     :
+                                //     <div char__search-wrapper>
+                                //     <div className='char__search-success'>There is! Visit {char.name} page?</div>
+                                //     <Link to={`/characters/${char.id}`} className='button button__secondary'>
+                                //         <div className='inner'>TO PAGE</div>
+                                //     </Link>
+                                // </div>
+
+
+                                        // <div className='char__search-error'>
+                                        //     The character was not found. Check the name and try again
+                                        // </div>
 
 
 
@@ -71,7 +79,7 @@ function CharSearchForm() {
                     <FormikErrorMessage className='char__search-error' component='div' name='charName'/>
                 </Form>
             </Formik>
-            {results}
+            {content}
             {errorMessage}
         </div>
     )
@@ -80,10 +88,11 @@ function CharSearchForm() {
 
 // const CharSearchForm = () => {
 //     const [char, setChar] = useState(null);
-//     const {loading, error, getCharacterByName, clearError} = useMarvelService();
+//     const {loading, error, getCharacterByName, clearError} = MarvelService();
 
-//     const onCharLoaded = (char) => {
-//         setChar(char);
+//     const onCharLoaded = (newchar) => {
+//         setChar(newchar);
+//         console.log(char.id)
 //     }
 
 //     const updateChar = (name) => {
@@ -97,7 +106,7 @@ function CharSearchForm() {
 //     const results = !char ? null : char.length > 0 ?
 //                     <div className="char__search-wrapper">
 //                         <div className="char__search-success">There is! Visit {char[0].name} page?</div>
-//                         <Link to={`/characters/${char[0].id}`} className="button button__secondary">
+//                         <Link to={`/characters/${char.id}`} className="button button__secondary">
 //                             <div className="inner">To page</div>
 //                         </Link>
 //                     </div> : 

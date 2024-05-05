@@ -9,6 +9,7 @@ import MarvelService from '../../../service/MarvelService';
 
 function SingleComicPage() {
     const {comicId} = useParams()
+
     const [comic, setComic] = useState(null)
     
     const {loading, error, getComic, clearError} = MarvelService()
@@ -24,8 +25,6 @@ function SingleComicPage() {
     }
 
     function onComicLoaded(newComic) {
-        console.log(newComic)
-
         setComic(newComic)
     }
 

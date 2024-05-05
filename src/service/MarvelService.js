@@ -18,7 +18,7 @@ const MarvelService = () => {
 
     const getCharacter = async (id) => {
         const res = await request(`${_apiBase}characters/${id}?${_apiKey}`)
-                                        // characters/1009664
+        
         return _transformCharacter(res.data.results[0])
     }
 
@@ -27,7 +27,6 @@ const MarvelService = () => {
         // console.log(_transformCharacter(res.data.results[0]))
 
         return _transformCharacter(res.data.results[0])
-
     }
 
     const getAllComics = async (offset = _baseOffset ) => {

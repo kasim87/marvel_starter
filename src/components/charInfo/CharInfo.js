@@ -13,8 +13,8 @@ function CharInfo(props) {
 
     const {loading, error, getCharacter, clearError} = MarvelService();
 
-    function onCharLoaded(char) {
-        setChar(char)
+    function onCharLoaded(newchar) {
+        setChar(newchar)
     }
 
     useEffect(() => {

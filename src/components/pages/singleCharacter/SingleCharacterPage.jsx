@@ -6,10 +6,8 @@ import ErrorMessage from '../../errorMessage/errorMessage'
 import AppBanner from '../../appBanner/AppBanner'
 import Spinner from '../../spinner/Spinner'
 
-
 function SingleCharacterPage() {
     const {characterId} = useParams()
-    console.log(characterId)
     
     const [char, setChar] = useState(null)
     
@@ -31,7 +29,7 @@ function SingleCharacterPage() {
 
     const errorMessage = error ? <ErrorMessage/> : null
     const spinner = loading ? <Spinner/> : null
-    const content = !(loading || error || !char) ? <View name={char}/> : null
+    const content = !(loading || error || !char) ? <View char={char}/> : null
 
     return (
         <>
@@ -41,7 +39,6 @@ function SingleCharacterPage() {
             {content}
         </>
     )
-
 
 function View({char}) {
     const {name, thumbnail, description} = char

@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
-import MarvelService from '../../../service/MarvelService'
-import ErrorMessage from '../../errorMessage/errorMessage'
-import AppBanner from '../../appBanner/AppBanner'
-import Spinner from '../../spinner/Spinner'
+import MarvelService from '../../service/MarvelService'
+import AppBanner from '../appBanner/AppBanner'
+import ErrorMessage from '../errorMessage/errorMessage'
+import Spinner from '../spinner/Spinner'
 
 function SinglePage({Component, dataType}) {
     const {id} = useParams()
@@ -20,6 +20,7 @@ function SinglePage({Component, dataType}) {
     function updateData() {
         clearError()
 
+        // eslint-disable-next-line default-case
         switch (dataType) {
             case 'comics':
                 getComic(id).then(onDataLoaded);

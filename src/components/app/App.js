@@ -12,12 +12,8 @@ function App() {
                     <Routes>
                         <Route path='/' element={<MainPage/>}/>
                         <Route path='/comics' element={<ComicsPage/>}/>
-                        <Route path="/comics/:id">
-                            <SinglePage Component={SingleComicPage} dataType='comics'/>    
-                        <Route/>
-                        <Route path="/characters/:id">
-                            <SinglePage Component={SingleCharacterPage} dataType='characters'/>
-                        <Route/>
+                        <Route path="/comics/:id" element={<SinglePage Component={SingleComicPage} dataType='comics'/>}/>
+                        <Route path="/characters/:id" element={<SinglePage Component={SingleCharacterPage} dataType='characters'/>}/>
                         <Route path="*" element={<Page404/>}/>
                     </Routes>
                 </main>

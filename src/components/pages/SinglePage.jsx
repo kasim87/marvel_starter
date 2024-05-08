@@ -20,7 +20,6 @@ function SinglePage({Component, dataType}) {
     function updateData() {
         clearError()
 
-        // eslint-disable-next-line default-case
         switch (dataType) {
             case 'comics':
                 getComic(id).then(onDataLoaded);

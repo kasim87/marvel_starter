@@ -1,5 +1,5 @@
 import './charList.scss';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import PropTypes from 'prop-types'
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
@@ -12,16 +12,12 @@ function setContent(process, Component, newItemLoading) {
     switch(process) {
         case 'waiting':
             return <Spinner/>
-            break
         case 'loading':
             return newItemLoading ? <Component/> : <Spinner/>
-            break
         case 'confirmed':
             return <Component/>
-            break
         case 'error':
             return <ErrorMessage/>
-            break
         default:
             throw new Error('unexpect process state')
     }
@@ -37,6 +33,7 @@ function CharList({onCharSelected}) {
 
     useEffect(() => {
         onRequest(offset, true)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     function onRequest(offset, initial) {
@@ -102,9 +99,14 @@ function CharList({onCharSelected}) {
         )
     }
 
+    const element = useMemo(() => {
+        return setContent(process, () => renderItems(charList), newItemLoading)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [process])
+
     return (
         <div className="char__list">
-            {setContent(process, () => renderItems(charList), newItemLoading)}
+            {element}
             <button 
                 className="button button__main button__long"
                 disabled={newItemLoading}

@@ -1,6 +1,6 @@
 class MarvelService {
   _apiBase = "https://marvel-server-zeta.vercel.app/";
-  // ЗДЕСЬ БУДЕТ ВАШ КЛЮЧ, ЭТОТ КЛЮЧ МОЖЕТ НЕ РАБОТАТЬ
+
   _apiKey = "apikey=d4eecb0c66dedbfae4eab45d312fc1df";
 
   getResource = async (url) => {
@@ -15,7 +15,7 @@ class MarvelService {
 
   getAllCharacters = async () => {
     const res = await this.getResource(
-      `${this._apiBase}characters?limit=9&offset=210&${this._apiKey}`,
+      `${this._apiBase}characters?limit=9&${this._apiKey}`,
     );
 
     return res.data.results.map(this._transformCharacter);
@@ -31,11 +31,13 @@ class MarvelService {
 
   _transformCharacter = (char) => {
     return {
+      id: char.id,
       name: char.name,
       description: char.description,
       thumbnail: char.thumbnail.path + "." + char.thumbnail.extension,
       homepage: char.urls[0].url,
       wiki: char.urls[1].url,
+      comics: char.comics.items,
     };
   };
 }

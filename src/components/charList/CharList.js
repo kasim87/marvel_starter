@@ -8,19 +8,10 @@ import "./charList.scss";
 const CharList = (props) => {
   const [charList, setCharList] = useState([]);
   const [visibleCount, setVisibleCount] = useState(9);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
-
-  const marvelService = new MarvelService();
+  const { loading, error, getAllCharacters } = MarvelService();
 
   const onCharListLoaded = (charList) => {
     setCharList(charList);
-    setLoading(false);
-  };
-
-  const onError = () => {
-    setLoading(false);
-    setError(true);
   };
 
   useEffect(() => {
@@ -28,7 +19,7 @@ const CharList = (props) => {
   }, []);
 
   const onRequest = () => {
-    marvelService.getAllCharacters().then(onCharListLoaded).catch(onError);
+    getAllCharacters().then(onCharListLoaded);
   };
 
   const itemRefs = useRef([]);

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Spinner from "../spinner/Spinner";
 import ErrorMessage from "../errorMessage/ErrorMessage";
 import MarvelService from "../../services/MarvelService";
@@ -8,38 +8,26 @@ import mjolnir from "../../resources/img/mjolnir.png";
 
 const RandomChar = () => {
   const [char, setChar] = useState({});
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
+  const { loading, error, getCharacter, clearError } = MarvelService();
 
-  const marvelService = new MarvelService();
+  useEffect(() => {
+    updateChar();
 
-  // componentDidMount() {
-  //   this.updateChar();
-  //   // this.timerId = setInterval(this.updateChar, 15000);
-  // }
+    const timeId = setInterval(updateChar, 60000);
 
-  // componentWillUnmount() {
-  //   clearInterval(this.timerId);
-  // }
+    return () => {
+      clearInterval(timeId);
+    };
+  }, []);
 
   const onCharLoaded = (char) => {
     setChar(char);
-    setLoading(false);
-  };
-
-  const onCharLoading = () => setLoading(true);
-
-  const onEror = () => {
-    setLoading(false);
-    setError(true);
   };
 
   const updateChar = () => {
     const id = Math.floor(Math.random() * (20 - 1) + 1);
-
-    onCharLoading();
-
-    marvelService.getCharacter(id).then(onCharLoaded).catch(onEror);
+    clearError();
+    getCharacter(id).then(onCharLoaded);
   };
 
   const errorMessage = error ? <ErrorMessage /> : null;
@@ -58,7 +46,7 @@ const RandomChar = () => {
           Do you want to get to know him better?
         </p>
         <p className="randomchar__title">Or choose another one</p>
-        <button onClick={this.updateChar} className="button button__main">
+        <button onClick={updateChar} className="button button__main">
           <div className="inner">try it</div>
         </button>
         <img src={mjolnir} alt="mjolnir" className="randomchar__decoration" />

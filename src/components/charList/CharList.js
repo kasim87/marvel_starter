@@ -10,17 +10,13 @@ const CharList = (props) => {
   const [visibleCount, setVisibleCount] = useState(9);
   const { loading, error, getAllCharacters } = MarvelService();
 
-  const onCharListLoaded = (charList) => {
-    setCharList(charList);
-  };
+  const onCharListLoaded = (charList) => setCharList(charList);
 
   useEffect(() => {
     onRequest();
   }, []);
 
-  const onRequest = () => {
-    getAllCharacters().then(onCharListLoaded);
-  };
+  const onRequest = () => getAllCharacters().then(onCharListLoaded);
 
   const itemRefs = useRef([]);
 

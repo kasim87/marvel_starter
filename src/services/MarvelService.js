@@ -7,6 +7,10 @@ const MarvelService = () => {
 
   const _apiKey = "apikey=d4eecb0c66dedbfae4eab45d312fc1df";
 
+  // https://marvel-server-zeta.vercel.app/comics?apikey=d4eecb0c66dedbfae4eab45d312fc1df
+
+  // https://marvel-server-zeta.vercel.app/comics?limit=10&apikey=d4eecb0c66dedbfae4eab45d312fc1df
+
   const getAllCharacters = async () => {
     const res = await request(`${_apiBase}characters?limit=20&${_apiKey}`);
 
@@ -19,10 +23,8 @@ const MarvelService = () => {
     return _transformCharacter(res.data.results[0]);
   };
 
-  const getAllComics = async (offset = 0) => {
-    const res = await request(
-      `${_apiBase}comics?orderBy=issueNumber&limit=8&offset=${offset}&${_apiKey}`,
-    );
+  const getAllComics = async () => {
+    const res = await request(`${_apiBase}comics?limit=20&${_apiKey}`);
 
     return res.data.results.map(_transformComics);
   };
@@ -54,14 +56,21 @@ const MarvelService = () => {
         : "No information about the number of pages",
       thumbnail: comics.thumbnail.path + "." + comics.thumbnail.extension,
       language: comics.textObjects[0]?.language || "en-us",
-      // optional chaining operator
       price: comics.prices[0].price
         ? `${comics.prices[0].price}$`
         : "not available",
     };
   };
 
-  return { loading, error, getAllCharacters, getCharacter, clearError };
+  return {
+    loading,
+    error,
+    getAllCharacters,
+    getCharacter,
+    getAllComics,
+    getComics,
+    clearError,
+  };
 };
 
 export default MarvelService;

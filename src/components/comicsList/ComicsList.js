@@ -18,7 +18,13 @@ const ComicsList = () => {
     onRequest();
   }, []);
 
-  const onRequest = () => getAllComics().then(onComicsListLoaded);
+  const onRequest = () => {
+    getAllComics()
+      .then(onComicsListLoaded)
+      .catch(() => {
+        setComicsList([]);
+      });
+  };
 
   const renderItems = (arr) => {
     const items = arr.map((item, i) => {

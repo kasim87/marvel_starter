@@ -16,7 +16,13 @@ const CharList = (props) => {
     onRequest();
   }, []);
 
-  const onRequest = () => getAllCharacters().then(onCharListLoaded);
+  const onRequest = () => {
+    getAllCharacters()
+      .then(onCharListLoaded)
+      .catch(() => {
+        setCharList([]);
+      });
+  };
 
   const itemRefs = useRef([]);
 

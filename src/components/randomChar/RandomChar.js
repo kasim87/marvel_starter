@@ -27,7 +27,11 @@ const RandomChar = () => {
   const updateChar = () => {
     const id = Math.floor(Math.random() * (20 - 1) + 1);
     clearError();
-    getCharacter(id).then(onCharLoaded);
+    getCharacter(id)
+      .then(onCharLoaded)
+      .catch(() => {
+        setChar({});
+      });
   };
 
   const errorMessage = error ? <ErrorMessage /> : null;

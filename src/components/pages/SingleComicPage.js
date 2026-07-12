@@ -14,7 +14,13 @@ const SingleComicPage = () => {
 
   const onComicLoaded = (comicData) => setComic(comicData);
 
-  const updateChar = () => getComics(comicId).then(onComicLoaded);
+  const updateChar = () => {
+    getComics(comicId)
+      .then(onComicLoaded)
+      .catch(() => {
+        setComic(null);
+      });
+  };
 
   useEffect(() => {
     updateChar();

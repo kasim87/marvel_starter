@@ -21,7 +21,12 @@ const CharInfo = ({ charId }) => {
   const updateChar = () => {
     if (!charId) return;
 
-    getCharacter(charId).then(onCharLoaded);
+    getCharacter(charId)
+      .then(onCharLoaded)
+      .catch(() => {
+        // Error is already handled by the MarvelService error state
+        setChar(null);
+      });
   };
 
   const skeleton = char || loading || error ? null : <Skeleton />;

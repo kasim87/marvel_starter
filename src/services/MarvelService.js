@@ -7,31 +7,71 @@ const MarvelService = () => {
 
   const _apiKey = "apikey=d4eecb0c66dedbfae4eab45d312fc1df";
 
-  // https://marvel-server-zeta.vercel.app/comics?apikey=d4eecb0c66dedbfae4eab45d312fc1df
-
-  // https://marvel-server-zeta.vercel.app/comics?limit=10&apikey=d4eecb0c66dedbfae4eab45d312fc1df
-
   const getAllCharacters = async () => {
-    const res = await request(`${_apiBase}characters?limit=20&${_apiKey}`);
-
-    return res.data.results.map(_transformCharacter);
+    try {
+      const res = await request(`${_apiBase}characters?limit=20&${_apiKey}`);
+      if (!res?.data?.results) {
+        throw new Error("Invalid response structure");
+      }
+      return res.data.results.map(_transformCharacter);
+    } catch (e) {
+      console.error("Error fetching all characters:", e);
+      throw e;
+    }
   };
 
   const getCharacter = async (id) => {
-    const res = await request(`${_apiBase}characters/${id}?${_apiKey}`);
+    try {
+      const res = await request(`${_apiBase}characters/${id}?${_apiKey}`);
+      if (!res?.data?.results?.[0]) {
+        throw new Error("Character not found");
+      }
+      return _transformCharacter(res.data.results[0]);
+    } catch (e) {
+      console.error("Error fetching character:", e);
+      throw e;
+    }
+  };
 
-    return _transformCharacter(res.data.results[0]);
+  const getCharacterByName = async (name) => {
+    try {
+      const res = await request(
+        `${_apiBase}characters?name=${name}&${_apiKey}`,
+      );
+      if (!res?.data?.results) {
+        throw new Error("Character not found");
+      }
+      return res.data.results.map(_transformCharacter);
+    } catch (e) {
+      console.error("Error fetching character by name:", e);
+      throw e;
+    }
   };
 
   const getAllComics = async () => {
-    const res = await request(`${_apiBase}comics?limit=20&${_apiKey}`);
-
-    return res.data.results.map(_transformComics);
+    try {
+      const res = await request(`${_apiBase}comics?limit=20&${_apiKey}`);
+      if (!res?.data?.results) {
+        throw new Error("Invalid response structure");
+      }
+      return res.data.results.map(_transformComics);
+    } catch (e) {
+      console.error("Error fetching all comics:", e);
+      throw e;
+    }
   };
 
   const getComics = async (id) => {
-    const res = await request(`${_apiBase}comics/${id}?${_apiKey}`);
-    return _transformComics(res.data.results[0]);
+    try {
+      const res = await request(`${_apiBase}comics/${id}?${_apiKey}`);
+      if (!res?.data?.results?.[0]) {
+        throw new Error("Comic not found");
+      }
+      return _transformComics(res.data.results[0]);
+    } catch (e) {
+      console.error("Error fetching comic:", e);
+      throw e;
+    }
   };
 
   const _transformCharacter = (char) => {
@@ -70,6 +110,7 @@ const MarvelService = () => {
     getAllComics,
     getComics,
     clearError,
+    getCharacterByName,
   };
 };
 

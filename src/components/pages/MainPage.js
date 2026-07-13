@@ -11,9 +11,7 @@ import decoration from "../../resources/img/vision.png";
 const MainPage = () => {
   const [selectedChar, setChar] = useState(null);
 
-  const onCharSelected = (id) => {
-    setChar(id);
-  };
+  const onCharSelected = (id) => setChar(id);
 
   return (
     <>
@@ -25,11 +23,12 @@ const MainPage = () => {
         <ErrorBoundary>
           <CharList onCharSelected={onCharSelected} />
         </ErrorBoundary>
+
         <div>
-          {" "}
           <ErrorBoundary>
             <CharInfo charId={selectedChar} />
           </ErrorBoundary>
+
           <ErrorBoundary>
             <CharSearchForm />
           </ErrorBoundary>

@@ -17,11 +17,7 @@ const CharList = (props) => {
   }, []);
 
   const onRequest = () => {
-    getAllCharacters()
-      .then(onCharListLoaded)
-      .catch(() => {
-        setCharList([]);
-      });
+    getAllCharacters().then(onCharListLoaded);
   };
 
   const itemRefs = useRef([]);
@@ -49,7 +45,7 @@ const CharList = (props) => {
             focusOnItem(i);
           }}
         >
-          <img src={thumbnail} alt={thumbnail} />
+          <img src={thumbnail} alt={name} />
           <div className="char__name">{name}</div>
         </li>
       );
